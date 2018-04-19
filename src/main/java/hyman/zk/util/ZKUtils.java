@@ -1,9 +1,11 @@
 package hyman.zk.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
@@ -14,6 +16,11 @@ import org.apache.zookeeper.ZooKeeper;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * 测试工具类，演示zookeeper的基本增删改查操作
+ * @author hyman
+ *
+ */
 public class ZKUtils {
 	private static final String connectString = "192.168.106.130:2181";
 	private static final int sessionTimeout=2000;
@@ -121,7 +128,18 @@ public class ZKUtils {
 	}
 	
 	
-	
+	/**
+	 * 上传配置文件到zookeeper，大小不要超过1M。否则会报错
+	 * @throws Exception
+	 */
+	@Test
+	public void fileUpload() throws Exception {
+		String filePath="F:/redis.properties";
+		String redis_properties = FileUtils.readFileToString(new File(filePath),"utf-8");
+		
+		zk.setData("/hyman/conf/redis_properties", redis_properties.getBytes(),-1);
+		
+	}
 	
 	
 	
